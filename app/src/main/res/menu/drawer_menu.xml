@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_daily"
+            android:icon="@drawable/ic_daily"
+            android:title="Daily" />
+        <item
+            android:id="@+id/nav_processing"
+            android:icon="@drawable/ic_processing"
+            android:title="Processing" />
+        <item
+            android:id="@+id/nav_stock"
+            android:icon="@drawable/ic_stock"
+            android:title="Stock" />
+        <item
+            android:id="@+id/nav_fumigation"
+            android:icon="@drawable/ic_fumigation"
+            android:title="Fumigation" />
+        <item
+            android:id="@+id/nav_back"
+            android:icon="@drawable/ic_back"
+            android:title="Logout" />
+
+    </group>
+
+
+</menu>
