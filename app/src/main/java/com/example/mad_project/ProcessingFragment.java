@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -23,6 +24,7 @@ public class ProcessingFragment extends Fragment {
     boolean running = false;
     Button start_button, pause_button, reset_button;
     TextView date_text;
+    ProgressBar pb;
     private long pauseOffset;
     @Nullable
     @Override
@@ -33,6 +35,7 @@ public class ProcessingFragment extends Fragment {
         pause_button = (Button) v.findViewById(R.id.pause_button);
         reset_button = (Button) v.findViewById(R.id.reset_button);
         date_text = (TextView) v.findViewById(R.id.text_view_date);
+
 
         String date_n = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(new Date());
         date_text.setText(date_n);
