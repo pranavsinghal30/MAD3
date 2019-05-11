@@ -12,35 +12,58 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static android.support.constraint.Constraints.TAG;
 
 public class StockFragment extends Fragment {
     EditText editDate;
-    Spinner item, inout;
+    Spinner item;
+    ToggleButton inout;
     Calendar myCalendar = Calendar.getInstance();
     String dateFormat = "dd.MM.yyyy";
     DatePickerDialog.OnDateSetListener date;
     SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.GERMAN);
     EditText qty, company, billno, sdate;
     Context context;
-    private DatabaseReference mDatabase;
+    private FirebaseFirestore db;
     ValueEventListener valueEventListener;
+    String companys,billnos,items,date1s,inouts;
+    Long quantity;
+    stock stocks ;
 
 
     @Nullable
@@ -51,35 +74,45 @@ public class StockFragment extends Fragment {
         Button buttonSubmit = (Button) view.findViewById(R.id.buttonSubmit);
         item = (Spinner) view.findViewById(R.id.spinner);
         company = (EditText) view.findViewById(R.id.company);
-        inout = (Spinner) view.findViewById(R.id.spinner2);
+        inout = (ToggleButton) view.findViewById(R.id.toggleButton);
         sdate = (EditText) view.findViewById(R.id.sdate);
         billno = (EditText) view.findViewById(R.id.bill);
         qty = (EditText) view.findViewById(R.id.editquantity);
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        db = FirebaseFirestore.getInstance();
+
+
+        context = view.getContext();
+        Toast.makeText(context, "hello", Toast.LENGTH_LONG).show();
+
         System.out.println("hello world");
-        valueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                stock st = dataSnapshot.getValue(stock.class);
-                System.out.println(st);
+        //gets a list of items and populates the spinner
+        db.collection("stock").document("itemlist")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            {
+                                String s = document.getData().toString();
+                                String [] lis = s.split(",?.=");
+                                List<String> list = new ArrayList<String>(Arrays.asList(lis));
+                                list.remove("{");
+                                lis = list.toArray(new String[0]);
+                                ArrayAdapter <String> arr = new ArrayAdapter<String>(context,R.layout.support_simple_spinner_dropdown_item,lis);
+                                item.setAdapter(arr);
+                                Log.d(TAG,s);
+                            }
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
 
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-
-            }
-        };
-        mDatabase.addValueEventListener(valueEventListener);
-
-        //etime = (EditText) findViewById(R.id.etime);
-        //stime = (EditText) findViewById(R.id.stime);
-        // init - set date to current date
         long currentdate = System.currentTimeMillis();
         String dateString = sdf.format(currentdate);
         editDate.setText(dateString);
-        context = view.getContext();
+
 
         // set calendar date and update editDate
         date = new DatePickerDialog.OnDateSetListener() {
@@ -127,8 +160,28 @@ public class StockFragment extends Fragment {
 
     private void updateDate() {
         editDate.setText(sdf.format(myCalendar.getTime()));
+        date1s = (sdf.format(myCalendar.getTime()));
     }
 
+    private void submit(View v)
+    {
+        Toast.makeText(context,"in submit",Toast.LENGTH_LONG).show();
+        DocumentReference newentry = db.collection("cities").document();
+
+
+        Toast.makeText(context,"refernce obtained",Toast.LENGTH_LONG).show();
+        companys = company.getText().toString();
+        billnos = billno.getText().toString();
+        quantity = Long.parseLong(qty.getText().toString());
+        inouts = inout.getText().toString();
+        items = item.getSelectedItem().toString();
+        stocks = new stock(companys,billnos,quantity,items,date1s,inouts);
+        Toast.makeText(context,"object created",Toast.LENGTH_LONG).show();
+        newentry.set(stocks);
+        Toast.makeText(context,"added entry",Toast.LENGTH_LONG).show();
+
+
+    }
 
 
 

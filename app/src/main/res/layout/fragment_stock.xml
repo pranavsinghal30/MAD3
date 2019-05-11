@@ -57,6 +57,7 @@
         android:layout_marginLeft="60dp"
         android:layout_marginTop="568dp"
         android:text="SUBMIT"
+        android:onClick="submit"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -98,7 +99,7 @@
         android:layout_marginTop="404dp"
         android:ems="10"
         android:hint="Quantity"
-        android:inputType="textPersonName"
+        android:inputType="number"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
