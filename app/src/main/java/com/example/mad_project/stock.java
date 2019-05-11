@@ -41,7 +41,7 @@ public class stock {
         return item;
     }
 
-   
+
     public String getInout()
     {
         return inout;
