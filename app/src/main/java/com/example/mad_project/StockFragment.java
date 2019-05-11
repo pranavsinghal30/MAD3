@@ -2,6 +2,7 @@ package com.example.mad_project;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,6 +24,7 @@ import android.widget.ToggleButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,8 +51,9 @@ import java.util.regex.Pattern;
 
 import static android.support.constraint.Constraints.TAG;
 
-public class StockFragment extends Fragment {
+public class StockFragment extends Fragment implements DialogInterface.OnClickListener {
     EditText editDate;
+    Button submit;
     Spinner item;
     ToggleButton inout;
     Calendar myCalendar = Calendar.getInstance();
@@ -61,6 +64,7 @@ public class StockFragment extends Fragment {
     Context context;
     private FirebaseFirestore db;
     ValueEventListener valueEventListener;
+    Timestamp firebasedate;
     String companys,billnos,items,date1s,inouts;
     Long quantity;
     stock stocks ;
@@ -94,6 +98,7 @@ public class StockFragment extends Fragment {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             {
+
                                 String s = document.getData().toString();
                                 String [] lis = s.split(",?.=");
                                 List<String> list = new ArrayList<String>(Arrays.asList(lis));
@@ -143,6 +148,7 @@ public class StockFragment extends Fragment {
         buttonSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(context,"in submit",Toast.LENGTH_LONG).show();
 
                 //Make sure all the fields are filled with values
                 if (TextUtils.isEmpty(sdate.getText().toString()) ||
@@ -151,6 +157,33 @@ public class StockFragment extends Fragment {
                     Toast.makeText(context, "All fields are mandatory.", Toast.LENGTH_LONG).show();
                     return;
                 }
+                else
+                {
+
+                    DocumentReference newentry = db.collection("stock").document();
+
+                    if(newentry != null)
+                    {
+                        Toast.makeText(context, "refernce obtained", Toast.LENGTH_LONG).show();
+                        companys = company.getText().toString();
+                        billnos = billno.getText().toString();
+                        quantity = Long.parseLong(qty.getText().toString());
+                        inouts = inout.getText().toString();
+                        items = item.getSelectedItem().toString();
+                        firebasedate = new Timestamp(myCalendar.getTime());
+                        stocks = new stock(companys, billnos, quantity, items, firebasedate, inouts);
+                        Toast.makeText(context, "object created", Toast.LENGTH_LONG).show();
+                        newentry.set(stocks);
+                        Toast.makeText(context, "added entry", Toast.LENGTH_LONG).show();
+                    }
+                    else
+                    {
+                        Toast.makeText(context,"error connecting",Toast.LENGTH_LONG).show();
+
+                    }
+
+                }
+
 
             }
         });
@@ -165,26 +198,16 @@ public class StockFragment extends Fragment {
 
     private void submit(View v)
     {
-        Toast.makeText(context,"in submit",Toast.LENGTH_LONG).show();
-        DocumentReference newentry = db.collection("cities").document();
 
-
-        Toast.makeText(context,"refernce obtained",Toast.LENGTH_LONG).show();
-        companys = company.getText().toString();
-        billnos = billno.getText().toString();
-        quantity = Long.parseLong(qty.getText().toString());
-        inouts = inout.getText().toString();
-        items = item.getSelectedItem().toString();
-        stocks = new stock(companys,billnos,quantity,items,date1s,inouts);
-        Toast.makeText(context,"object created",Toast.LENGTH_LONG).show();
-        newentry.set(stocks);
-        Toast.makeText(context,"added entry",Toast.LENGTH_LONG).show();
 
 
     }
 
 
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
 
+    }
 }
 
 
