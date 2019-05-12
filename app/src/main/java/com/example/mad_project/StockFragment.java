@@ -113,7 +113,7 @@ public class StockFragment extends Fragment implements DialogInterface.OnClickLi
                         }
                     }
                 });
-
+        //Date picker
         long currentdate = System.currentTimeMillis();
         String dateString = sdf.format(currentdate);
         editDate.setText(dateString);
@@ -144,7 +144,7 @@ public class StockFragment extends Fragment implements DialogInterface.OnClickLi
             }
         });
 
-
+        //submit the info to firestore
         buttonSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
