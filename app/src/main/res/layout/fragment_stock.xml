@@ -26,15 +26,12 @@
         android:layout_height="42dp"
         android:layout_marginStart="64dp"
         android:layout_marginLeft="64dp"
-
         android:layout_marginTop="476dp"
-
         android:clickable="true"
         android:editable="false"
         android:hint="Date"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <ToggleButton
         android:id="@+id/toggleButton"

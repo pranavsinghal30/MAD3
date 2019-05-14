@@ -3,7 +3,6 @@ package com.example.mad_project;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -52,20 +51,18 @@ import java.util.regex.Pattern;
 import static android.support.constraint.Constraints.TAG;
 
 public class StockFragment extends Fragment implements DialogInterface.OnClickListener {
-    EditText editDate;
-    Button submit;
     Spinner item;
     ToggleButton inout;
     Calendar myCalendar = Calendar.getInstance();
     String dateFormat = "dd.MM.yyyy";
     DatePickerDialog.OnDateSetListener date;
     SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.GERMAN);
-    EditText qty, company, billno, sdate;
+    EditText qty, company, billno, editDate;
     Context context;
     private FirebaseFirestore db;
     ValueEventListener valueEventListener;
     Timestamp firebasedate;
-    String companys,billnos,items,date1s,inouts;
+    String companys, billnos, items, date1s, inouts;
     Long quantity;
     stock stocks ;
 
@@ -73,13 +70,12 @@ public class StockFragment extends Fragment implements DialogInterface.OnClickLi
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_stock, container, false);
+        View view = inflater.inflate(R.layout.fragment_stock2, container, false);
         editDate = (EditText) view.findViewById(R.id.sdate);
         Button buttonSubmit = (Button) view.findViewById(R.id.buttonSubmit);
         item = (Spinner) view.findViewById(R.id.spinner);
         company = (EditText) view.findViewById(R.id.company);
         inout = (ToggleButton) view.findViewById(R.id.toggleButton);
-        sdate = (EditText) view.findViewById(R.id.sdate);
         billno = (EditText) view.findViewById(R.id.bill);
         qty = (EditText) view.findViewById(R.id.editquantity);
         db = FirebaseFirestore.getInstance();
@@ -118,10 +114,8 @@ public class StockFragment extends Fragment implements DialogInterface.OnClickLi
         String dateString = sdf.format(currentdate);
         editDate.setText(dateString);
 
-
         // set calendar date and update editDate
         date = new DatePickerDialog.OnDateSetListener() {
-
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
@@ -131,10 +125,8 @@ public class StockFragment extends Fragment implements DialogInterface.OnClickLi
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 updateDate();
             }
-
         };
         editDate.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
@@ -151,19 +143,14 @@ public class StockFragment extends Fragment implements DialogInterface.OnClickLi
                 Toast.makeText(context,"in submit",Toast.LENGTH_LONG).show();
 
                 //Make sure all the fields are filled with values
-                if (TextUtils.isEmpty(sdate.getText().toString()) ||
+                if (TextUtils.isEmpty(editDate.getText().toString()) ||
                         TextUtils.isEmpty(item.getSelectedItem().toString()) ||
                         TextUtils.isEmpty(billno.getText().toString())) {
                     Toast.makeText(context, "All fields are mandatory.", Toast.LENGTH_LONG).show();
                     return;
-                }
-                else
-                {
-
+                } else {
                     DocumentReference newentry = db.collection("stock").document();
-
-                    if(newentry != null)
-                    {
+                    if(newentry != null) {
                         Toast.makeText(context, "refernce obtained", Toast.LENGTH_LONG).show();
                         companys = company.getText().toString();
                         billnos = billno.getText().toString();
@@ -175,34 +162,25 @@ public class StockFragment extends Fragment implements DialogInterface.OnClickLi
                         Toast.makeText(context, "object created", Toast.LENGTH_LONG).show();
                         newentry.set(stocks);
                         Toast.makeText(context, "added entry", Toast.LENGTH_LONG).show();
-                    }
-                    else
-                    {
+                    } else {
                         Toast.makeText(context,"error connecting",Toast.LENGTH_LONG).show();
-
                     }
-
                 }
-
-
             }
         });
-
         return view;
     }
 
     private void updateDate() {
         editDate.setText(sdf.format(myCalendar.getTime()));
-        date1s = (sdf.format(myCalendar.getTime()));
+//        date1s = (sdf.format(myCalendar.getTime()));
     }
 
-    private void submit(View v)
-    {
+    private void submit(View v) {
 
 
 
     }
-
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
