@@ -1,125 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ProcessingFragment"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ProcessingFragment">
-
-    <Button
-        android:id="@+id/buttonSubmit2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="132dp"
-        android:layout_marginLeft="132dp"
-        android:layout_marginTop="620dp"
-        android:orientation="vertical"
-        android:text="Submit"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="152dp"
-        android:layout_height="31dp"
-        android:layout_margin="10dp"
-        android:layout_marginStart="68dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Processing"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/largetext"
+        android:layout_margin="10dp" />
 
-        android:layout_marginLeft="68dp"
-        android:layout_marginTop="40dp"
-        android:text="Items:"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Spinner
-        android:id="@+id/spinner1"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="162dp"
-        android:layout_marginLeft="162dp"
-        android:layout_marginTop="120dp"
-        android:layout_marginEnd="201dp"
-        android:layout_marginRight="201dp"
-        android:autofillHints="Choose item"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginLeft="10dp"
+        android:layout_gravity="center"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical">
 
+        <EditText
+            android:id="@+id/quantity_edittext"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/quantity"
+            android:inputType="numberDecimal"
+            android:layout_margin="10dp" />
 
-    <EditText
-        android:id="@+id/sdate"
-        android:layout_width="288dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
+        <EditText
+            android:id="@+id/rejected_edittext"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Rejection"
+            android:inputType="numberDecimal"
+            android:layout_margin="10dp" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        android:layout_marginTop="528dp"
-        android:clickable="true"
-        android:editable="false"
-        android:hint="Date"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:text="@string/item"
+                android:layout_weight="2"
+                android:layout_gravity="center"
+                android:layout_width="0dp"
+                android:textSize="@dimen/mediumtext"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp" />
+            <Spinner
+                android:id="@+id/itemsSpinner"
+                android:layout_weight="8"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp" />
+        </LinearLayout>
 
-    <EditText
-        android:id="@+id/stime"
-        android:layout_width="284dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
+        <EditText
+            android:id="@+id/startTime_edittext"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/start_time"
+            android:inputType="time"
+            android:layout_margin="10dp" />
 
-        android:layout_marginTop="184dp"
-        android:clickable="true"
-        android:editable="false"
-        android:hint="Start Time"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <EditText
+            android:id="@+id/endTime_edittext"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/end_time"
+            android:inputType="time"
+            android:layout_margin="10dp" />
 
-    <EditText
-        android:id="@+id/etime"
-        android:layout_width="284dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
+        <EditText
+            android:id="@+id/date_edittext"
+            android:layout_gravity="center"
+            android:inputType="date"
+            android:hint="@string/date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"/>
 
-        android:layout_marginTop="252dp"
-        android:clickable="true"
-        android:editable="false"
-        android:hint="End TIme"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <EditText
-        android:id="@+id/editQuantity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_marginStart="76dp"
-        android:layout_marginLeft="76dp"
-        android:layout_marginTop="72dp"
-        android:ems="10"
-        android:hint="Quantity"
-        android:inputType="number"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <EditText
-        android:id="@+id/editTextRejection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginLeft="60dp"
-        android:layout_marginTop="184dp"
-        android:ems="10"
-        android:hint="Rejection"
-        android:inputType="number"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-</android.support.constraint.ConstraintLayout>
+        <Button
+            android:id="@+id/processSubmit_button"
+            style="@style/buttonStyle"
+            android:layout_gravity="center"
+            android:text="@string/submit" />
+    </LinearLayout>
+</LinearLayout>

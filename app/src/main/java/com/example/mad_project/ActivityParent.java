@@ -11,7 +11,6 @@ public abstract class ActivityParent extends AppCompatActivity {
 
     protected abstract boolean checkCredentials();
 
-
     protected void logout() {
         SharedPreferences sharedPreferences = getSharedPreferences("credentials", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();

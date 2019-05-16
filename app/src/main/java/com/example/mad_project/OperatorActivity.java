@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.SystemClock;
+import android.preference.PreferenceActivity;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -34,11 +35,7 @@ public class OperatorActivity extends ActivityParent implements NavigationView.O
 
     private DrawerLayout drawer;
     android.support.v7.widget.Toolbar toolbar;
-    private Chronometer chronometer;
-    private boolean running;
-    private long pauseOffset;
-    SharedPreferences sharedPreferences;
-
+    TextView name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,14 +44,16 @@ public class OperatorActivity extends ActivityParent implements NavigationView.O
         if (!correct) {
             logout();
         }
-        // chronometer = (Chronometer) findViewById(R.id.chronometer);
-
-        toolbar=findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        drawer=findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View header = navigationView.getHeaderView(0);
+        name = (TextView) header.findViewById(R.id.username_header);
+        if (name != null)
+            name.setText(getSharedPreferences("credentials", Activity.MODE_PRIVATE).getString("username", "Operator"));
 
         ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(this,drawer,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -62,7 +61,7 @@ public class OperatorActivity extends ActivityParent implements NavigationView.O
 
         if(savedInstanceState == null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.fragment_container, new DailyFragment(), "default");//.commit();
+            ft.replace(R.id.fragment_container, new DailyFragment(), "default");
 //            ft.addToBackStack("default");
             ft.commit();
             navigationView.setCheckedItem(R.id.nav_daily);
@@ -105,10 +104,6 @@ public class OperatorActivity extends ActivityParent implements NavigationView.O
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ProcessingFragment(), "top").addToBackStack("top").commit();
                 break;
 
-            case R.id.nav_fumigation:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new FumigationFragment(), "top").addToBackStack("top").commit();
-                break;
-
             case R.id.nav_stock:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new StockFragment(), "top").addToBackStack("top").commit();
                 break;
@@ -117,9 +112,7 @@ public class OperatorActivity extends ActivityParent implements NavigationView.O
                 logout();
                 break;
         }
-
         drawer.closeDrawer(GravityCompat.START);
-
         return true;
     }
 
@@ -132,29 +125,6 @@ public class OperatorActivity extends ActivityParent implements NavigationView.O
         }
     }
 
-//    public void start_chronometer(View view){
-//        if(!running){
-//            chronometer.setBase(SystemClock.elapsedRealtime()-pauseOffset);
-//            chronometer.start();
-//            running=true;
-//        }
-//
-//    }
-//
-//    public void pause_chronometer(View view){
-//        if(running){
-//            chronometer.stop();
-//            pauseOffset=SystemClock.elapsedRealtime()-chronometer.getBase();
-//            running=false;
-//        }
-//
-//    }
-//
-//    public void reset_chronometer(View view){
-//        chronometer.setBase(SystemClock.elapsedRealtime());
-//        pauseOffset=0;
-//
-//    }
     protected boolean checkCredentials() {
         SharedPreferences sharedPreferences = getSharedPreferences("credentials", Activity.MODE_PRIVATE);
         String uname = sharedPreferences.getString("username", "");
@@ -165,17 +135,5 @@ public class OperatorActivity extends ActivityParent implements NavigationView.O
         }
         return false;
     }
-/*
-    public void logout() {
-        SharedPreferences sharedPreferences = getSharedPreferences("credentials", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.remove("username");
-        editor.remove("password");
-        editor.apply();
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        ActivityCompat.finishAffinity(this);
-    }
-   */
+
 }

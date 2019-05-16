@@ -2,11 +2,15 @@ package com.example.mad_project;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,36 +25,26 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.lang.reflect.Array;
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.Date;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static android.support.constraint.Constraints.TAG;
 
-public class StockFragment extends Fragment implements DialogInterface.OnClickListener {
+public class StockFragment extends Fragment {
     Spinner item;
     ToggleButton inout;
     Calendar myCalendar = Calendar.getInstance();
@@ -70,7 +64,7 @@ public class StockFragment extends Fragment implements DialogInterface.OnClickLi
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_stock2, container, false);
+        View view = inflater.inflate(R.layout.fragment_stock, container, false);
         editDate = (EditText) view.findViewById(R.id.sdate);
         Button buttonSubmit = (Button) view.findViewById(R.id.buttonSubmit);
         item = (Spinner) view.findViewById(R.id.spinner);
@@ -79,12 +73,18 @@ public class StockFragment extends Fragment implements DialogInterface.OnClickLi
         billno = (EditText) view.findViewById(R.id.bill);
         qty = (EditText) view.findViewById(R.id.editquantity);
         db = FirebaseFirestore.getInstance();
-
-
+        Button takePhoto = (Button) view.findViewById(R.id.buttonPhoto);
         context = view.getContext();
         Toast.makeText(context, "hello", Toast.LENGTH_LONG).show();
 
         System.out.println("hello world");
+        takePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dispatchPictureTakerAction(v.getRootView());
+            }
+
+        });
         //gets a list of items and populates the spinner
         db.collection("stock").document("itemlist")
                 .get()
@@ -130,6 +130,8 @@ public class StockFragment extends Fragment implements DialogInterface.OnClickLi
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
+
+//                new DatePickerDialog(context, , Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH);
                 new DatePickerDialog(context, date, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
@@ -176,17 +178,41 @@ public class StockFragment extends Fragment implements DialogInterface.OnClickLi
 //        date1s = (sdf.format(myCalendar.getTime()));
     }
 
+
+
+    private void dispatchPictureTakerAction(View view) {
+        Intent takePic = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePic.resolveActivity(view.getContext().getPackageManager()) != null){
+            File photoFile=null;
+            String name = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+//            photoFile=createPhotoFile();
+            File sdCard =
+                    Environment.getExternalStorageDirectory();
+            File directory = new File(sdCard.getAbsolutePath()
+                    + "/Pictures");
+            System.out.println(directory.getAbsolutePath());
+            try{
+                photoFile= File.createTempFile(name,".jpg", directory);
+            }
+            catch(IOException e){
+                Toast.makeText(view.getContext(), "Excep : ", Toast.LENGTH_SHORT).show();
+                System.out.println("Excep : "+ e.toString());
+                Log.d("mylog","Excep : "+ e.toString());
+            }
+
+            if (photoFile != null) {
+                String pathToFile = photoFile.getAbsolutePath();
+                System.out.println(pathToFile);
+                Uri photoURI = FileProvider.getUriForFile(view.getContext(),"com.mad.cameraandroid.fileprovider", photoFile);
+                takePic.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePic,1);
+            }
+        }
+    }
     private void submit(View v) {
 
 
 
     }
 
-    @Override
-    public void onClick(DialogInterface dialog, int which) {
-
-    }
 }
-
-
-

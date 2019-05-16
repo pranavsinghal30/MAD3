@@ -3,14 +3,41 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorAccent">@color/secondaryDarkColor</item>
+        <!--<color name="colorPrimary">#4b0082</color>-->
+        <!--<color name="colorPrimaryDark">#4b0082</color>-->
+        <!--<color name="colorAccent">#800080</color>-->
+    </style>
+
+    <style name="navHeaderStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">176dp</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:background">@color/secondaryDarkColor</item>
+    </style>
+
+    <style name="buttonStyle">
+        <item name="android:layout_width">210dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/mediumtext</item>
+        <item name="android:layout_margin">@dimen/margin</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:background">@color/primaryLightColor</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/purple</item>
+        <item name="colorPrimaryDark">@color/lavender</item>
+        <item name="colorAccent">@color/lavender</item>
     </style>
 
+    <dimen name="smalltext">12sp</dimen>
+    <dimen name="mediumtext">18sp</dimen>
+    <dimen name="largetext">22sp</dimen>
+    <dimen name="margin">10dp</dimen>
 </resources>

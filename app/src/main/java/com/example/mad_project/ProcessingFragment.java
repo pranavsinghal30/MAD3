@@ -2,9 +2,7 @@ package com.example.mad_project;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,9 +16,7 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,8 +25,6 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,7 +36,7 @@ import java.util.Locale;
 
 import static android.support.constraint.Constraints.TAG;
 
-public class ProcessingFragment extends Fragment implements DialogInterface.OnClickListener {
+public class ProcessingFragment extends Fragment {
     Chronometer chronometer;
     boolean running = false;
     Button submit_button;
@@ -59,7 +53,7 @@ public class ProcessingFragment extends Fragment implements DialogInterface.OnCl
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View v = inflater.inflate(R.layout.fragment_processing2,container,false);
+        final View v = inflater.inflate(R.layout.fragment_processing,container,false);
         chronometer = (Chronometer) v.findViewById(R.id.chronometer);
         db = FirebaseFirestore.getInstance();
         itemsSpinner = (Spinner) v.findViewById(R.id.itemsSpinner);
@@ -197,7 +191,7 @@ public class ProcessingFragment extends Fragment implements DialogInterface.OnCl
         });*/
         return v;
     }
-
+/*
     public void start_chronometer(){
         if(!running){
             chronometer.setBase(SystemClock.elapsedRealtime() - pauseOffset);
@@ -220,14 +214,10 @@ public class ProcessingFragment extends Fragment implements DialogInterface.OnCl
         chronometer.setBase(SystemClock.elapsedRealtime());
         pauseOffset = 0;
     }
-
+*/
     private void updateDate() {
         date_edittext.setText(sdf.format(myCalendar.getTime()));
 //        date1s = (sdf.format(myCalendar.getTime()));
     }
 
-    @Override
-    public void onClick(DialogInterface dialog, int which) {
-
-    }
 }
