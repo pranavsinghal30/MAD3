@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.os.Environment;
-import android.provider.MediaStore;
+import android.provider.MediaStore
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.solver.widgets.Snapshot;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
@@ -28,9 +30,18 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.model.Document;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -59,6 +70,7 @@ public class StockFragment extends Fragment {
     String companys, billnos, items, date1s, inouts;
     Long quantity;
     stock stocks ;
+    Boolean first;
 
 
     @Nullable
@@ -73,7 +85,12 @@ public class StockFragment extends Fragment {
         billno = (EditText) view.findViewById(R.id.bill);
         qty = (EditText) view.findViewById(R.id.editquantity);
         db = FirebaseFirestore.getInstance();
+
+
+        first = true;
+
         Button takePhoto = (Button) view.findViewById(R.id.buttonPhoto);
+
         context = view.getContext();
         Toast.makeText(context, "hello", Toast.LENGTH_LONG).show();
 
@@ -143,6 +160,7 @@ public class StockFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context,"in submit",Toast.LENGTH_LONG).show();
+                first = false;
 
                 //Make sure all the fields are filled with values
                 if (TextUtils.isEmpty(editDate.getText().toString()) ||
@@ -170,6 +188,77 @@ public class StockFragment extends Fragment {
                 }
             }
         });
+
+
+        db.collection("stock").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value,
+                                @Nullable FirebaseFirestoreException e) {
+                DocumentReference docref;
+                String item;
+
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e);
+                    return;
+                }
+
+
+                for (DocumentChange doc : value.getDocumentChanges()) {
+                    QueryDocumentSnapshot document = doc.getDocument();
+                    Log.d(TAG,doc.getType().toString());
+                    switch (doc.getType()) {
+                        case ADDED:
+                            Log.d(TAG, "New city: " + doc.getDocument().getData());
+                            break;
+                        case MODIFIED:
+                            Log.d(TAG, "Modified city: " + doc.getDocument().getData());
+                            break;
+                        case REMOVED:
+                            Log.d(TAG, "Removed city: " + doc.getDocument().getData());
+                            break;
+                    }
+                    if(document!= null && !first) {
+                        Log.d(TAG, "New city: " + doc.getDocument().get("inout")+"inside if");
+                        if (doc.getDocument().get("inout").toString().equals("OUTGOING")) {
+                            item = doc.getDocument().get("item").toString();
+                            item = item.substring(0, item.length() - 2);
+                            Log.d(TAG,"outgoing"+ item);
+                            docref = db.collection("inventory").document(item);
+                            docref.update("processing", FieldValue.increment(-(Integer.parseInt(doc.getDocument().get("quantity").toString()))));
+
+
+                        } else if (doc.getDocument().get("inout").toString().equals("INCOMING")) {
+                            item = doc.getDocument().get("item").toString();
+                            item = item.substring(0, item.length() - 2);
+                            Log.d(TAG,"incoming"+ item);
+                            docref = db.collection("inventory").document(item);
+                            Log.d(TAG,"docref created"+ docref.getId());
+                            docref.update("input", FieldValue.increment((Integer.parseInt(doc.getDocument().get("quantity").toString()))));
+                            docref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
+                                        if (document.exists()) {
+                                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                        } else {
+                                            Log.d(TAG, "No such document");
+                                        }
+                                    } else {
+                                        Log.d(TAG, "get failed with ", task.getException());
+                                    }
+                                }
+                            });
+                            Log.d(TAG,"docref updated");
+
+                        }
+                    }
+                }
+
+            }
+        });
+
+
         return view;
     }
 
