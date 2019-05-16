@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mad_project">
 
+    <uses-feature android:name="android.hardware.camera"
+        android:required="true" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,8 +15,6 @@
         android:theme="@style/AppTheme">
         <activity android:name=".OperatorActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".QualityActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".AdminActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MainActivity">
@@ -22,6 +24,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:authorities="com.mad.cameraandroid.fileprovider"
+            android:name="android.support.v4.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths">
+
+            </meta-data>
+        </provider>
     </application>
 
 </manifest>

@@ -1,6 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <!--<color name="colorPrimary">#008577</color>-->
+    <!--<color name="colorPrimaryDark">#00574B</color>-->
+    <!--<color name="colorAccent">#D81B60</color>-->
+    <!--<item name="colorPrimary">#4b0082</item>-->
+    <!--<item name="colorPrimaryDark">#4b0082</item>-->
+    <!--<item name="colorAccent">#800080</item>-->
+    <color name="colorPrimary">#4b0082</color>
+    <color name="purple">#4b0082</color>
+    <!--<color name="colorPrimaryDark">#4b0082</color>-->
+
+    <color name="colorPrimaryDark">#800080</color>
+    <color name="colorAccent">#800080</color>
+    <color name="lavender">#800080</color>
+<!--
+    <color name="primaryColor">#bf360c</color>
+    <color name="primaryLightColor">#f9683a</color>
+    <color name="primaryDarkColor">#870000</color>
+    <color name="secondaryColor">#7bb241</color>
+    <color name="secondaryLightColor">#ade470</color>
+    <color name="secondaryDarkColor">#4a820c</color>
+    <color name="primaryTextColor">#ffffff</color>
+    <color name="secondaryTextColor">#000000</color>
+-->
+    <color name="primaryColor">#7b1fa2</color>
+
+    <color name="primaryLightColor">#ae52d4</color>
+
+    <color name="primaryDarkColor">#4a0072</color>
+<!--
+    <color name="secondaryColor">#00897b</color>
+
+    <color name="secondaryLightColor">#4ebaaa</color>
+
+    <color name="secondaryDarkColor">#005b4f</color>
+-->
+    <color name="primaryTextColor">#ffffff</color>
+
+    <color name="secondaryTextColor">#000000</color>
+
+    <color name="secondaryColor">#fefe33</color>
+
+    <color name="secondaryLightColor">#ffff6e</color>
+
+    <color name="secondaryDarkColor">#c7cb00</color>
+
 </resources>

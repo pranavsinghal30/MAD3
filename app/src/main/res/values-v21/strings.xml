@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="date">Date</string>
+    <string name="quantity">Quantity</string>
+    <string name="start_time">Start Time</string>
+    <string name="end_time">End Time</string>
+    <string name="submit">SUBMIT</string>
+    <string name="company">Company</string>
+    <string name="bill_no">Bill No</string>
+    <string name="item">Item</string>
+    <string name="stock">Stock</string>
+</resources>

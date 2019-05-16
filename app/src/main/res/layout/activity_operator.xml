@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".OperatorActivity"
+    android:theme="@style/AppTheme.NoActionBar"
     tools:openDrawer="start">
 
     <LinearLayout
@@ -18,13 +18,14 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
+            android:background="@color/primaryColor"
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
         <FrameLayout
             android:id="@+id/fragment_container"
+            android:theme="@style/AppTheme"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
@@ -35,7 +36,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/drawer_menu" />
-
+        app:menu="@menu/drawer_menu_operator" />
 
 </android.support.v4.widget.DrawerLayout>

@@ -1,10 +1,16 @@
 package com.example.mad_project;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.SystemClock;
+import android.preference.PreferenceActivity;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -24,39 +31,41 @@ import java.util.Locale;
 
 import static android.os.Build.VERSION_CODES.P;
 
-public class OperatorActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class OperatorActivity extends ActivityParent implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
     android.support.v7.widget.Toolbar toolbar;
-    private Chronometer chronometer;
-    private boolean running;
-    private long pauseOffset;
-
-
+    TextView name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_operator);
-
-//        chronometer = (Chronometer) findViewById(R.id.chronometer);
-
-        toolbar=findViewById(R.id.toolbar);
+        boolean correct = checkCredentials();
+        if (!correct) {
+            logout();
+        }
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        drawer=findViewById(R.id.drawer_layout);
-        NavigationView navigationView=findViewById(R.id.nav_view);
+        drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View header = navigationView.getHeaderView(0);
+        name = (TextView) header.findViewById(R.id.username_header);
+        if (name != null)
+            name.setText(getSharedPreferences("credentials", Activity.MODE_PRIVATE).getString("username", "Operator"));
 
         ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(this,drawer,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        if(savedInstanceState==null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DailyFragment()).commit();
+        if(savedInstanceState == null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_container, new DailyFragment(), "default");
+//            ft.addToBackStack("default");
+            ft.commit();
             navigationView.setCheckedItem(R.id.nav_daily);
         }
-
-
         /*TextView tv_date=(TextView)findViewById(R.id.text_view_date);
         String date_n = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(new Date());
         tv_date.setText(date_n);
@@ -81,37 +90,29 @@ public class OperatorActivity extends AppCompatActivity implements NavigationVie
         String output=sdf1.format(c.getTime());
         TextView tv_date=(TextView)findViewById(R.id.text_view_date);
         tv_date.setText(output);*/
-
-
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
+        getSupportFragmentManager().popBackStack("top", FragmentManager.POP_BACK_STACK_INCLUSIVE);
         switch(menuItem.getItemId()){
             case R.id.nav_daily:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new DailyFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new DailyFragment(), "top").commit();
                 break;
 
             case R.id.nav_processing:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ProcessingFragment()).commit();
-                break;
-
-            case R.id.nav_fumigation:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new FumigationFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ProcessingFragment(), "top").addToBackStack("top").commit();
                 break;
 
             case R.id.nav_stock:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new StockFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new StockFragment(), "top").addToBackStack("top").commit();
                 break;
 
             case R.id.nav_back:
                 logout();
                 break;
         }
-
         drawer.closeDrawer(GravityCompat.START);
-
         return true;
     }
 
@@ -124,36 +125,15 @@ public class OperatorActivity extends AppCompatActivity implements NavigationVie
         }
     }
 
-//    public void start_chronometer(View view){
-//        if(!running){
-//            chronometer.setBase(SystemClock.elapsedRealtime()-pauseOffset);
-//            chronometer.start();
-//            running=true;
-//        }
-//
-//    }
-//
-//    public void pause_chronometer(View view){
-//        if(running){
-//            chronometer.stop();
-//            pauseOffset=SystemClock.elapsedRealtime()-chronometer.getBase();
-//            running=false;
-//        }
-//
-//    }
-//
-//    public void reset_chronometer(View view){
-//        chronometer.setBase(SystemClock.elapsedRealtime());
-//        pauseOffset=0;
-//
-//    }
-
-    public void logout() {
-        Intent i = new Intent(this, MainActivity.class);
-        startActivity(i);
+    protected boolean checkCredentials() {
+        SharedPreferences sharedPreferences = getSharedPreferences("credentials", Activity.MODE_PRIVATE);
+        String uname = sharedPreferences.getString("username", "");
+        String pswd = sharedPreferences.getString("password", "");
+//        Toast.makeText(this, String.format("Check UserName: %s, Password: %s", uname, pswd), Toast.LENGTH_SHORT).show();
+        if (uname.equals(getString(R.string.OperatorsUsername)) && pswd.equals(getString(R.string.OperatorsPassword))) {
+            return true;
+        }
+        return false;
     }
-
-
-
 
 }

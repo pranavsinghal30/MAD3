@@ -17,6 +17,10 @@
             android:icon="@drawable/ic_stock"
             android:title="Issues" />
         <item
+            android:id="@+id/nav_adduser_admin"
+            android:icon="@drawable/ic_add_user"
+            android:title="Add Operator" />
+        <item
             android:id="@+id/nav_analysis_admin"
             android:icon="@drawable/ic_fumigation"
             android:title="Analysis" />

@@ -1,107 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".StockFragment">
 
+    <LinearLayout
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
 
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="206dp"
-        android:layout_height="39dp"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/stock"
+                android:layout_weight="2"
+                android:layout_gravity="center"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/largetext"
+                android:layout_margin="8dp" />
 
-        android:layout_marginStart="68dp"
-        android:layout_marginLeft="68dp"
-        android:layout_marginTop="180dp"
-        android:autofillHints="Choose item"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            <ToggleButton
+                android:id="@+id/toggleButton"
+                android:layout_width="210dp"
+                android:layout_height="45dp"
+                android:layout_weight="3"
+                android:layout_gravity="center"
+                android:layout_margin="8dp"
+                android:textColor="@android:color/black"
+                android:text="ToggleButton"
+                android:textOff="OUTGOING"
+                android:textOn="INCOMING" />
 
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_margin="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/sdate"
-        android:layout_width="220dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginLeft="64dp"
+            <TextView
+                android:text="@string/item"
+                android:layout_weight="2"
+                android:layout_gravity="center"
+                android:layout_width="0dp"
+                android:textSize="@dimen/mediumtext"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp" />
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_weight="8"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp" />
+        </LinearLayout>
 
-        android:layout_marginTop="476dp"
+        <!--<Spinner-->
+            <!--android:id="@+id/spinner"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="45dp"-->
+            <!--android:layout_margin="10dp"-->
+            <!--android:autofillHints="Choose item" />-->
 
-        android:clickable="true"
-        android:editable="false"
-        android:hint="Date"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <EditText
+            android:id="@+id/company"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/company"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:inputType="textPersonName" />
 
+        <EditText
+            android:id="@+id/bill"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/bill_no"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:inputType="textPersonName" />
 
-    <ToggleButton
-        android:id="@+id/toggleButton"
-        android:layout_width="203dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="68dp"
-        android:layout_marginLeft="68dp"
-        android:layout_marginTop="112dp"
-        android:text="ToggleButton"
-        android:textOff="OUTGOING"
-        android:textOn="INCOMING"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <EditText
+            android:id="@+id/editquantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/quantity"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:inputType="number" />
 
-    <Button
-        android:id="@+id/buttonSubmit"
-        android:layout_width="219dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginLeft="60dp"
-        android:layout_marginTop="568dp"
-        android:text="SUBMIT"
-        android:onClick="submit"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <EditText
+            android:id="@+id/sdate"
+            android:inputType="date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:clickable="true"
+            android:layout_gravity="center"
+            android:hint="@string/date" />
 
-    <EditText
-        android:id="@+id/company"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
+        <Button
+            android:id="@+id/buttonPhoto"
+            style="@style/buttonStyle"
+            android:background="@color/secondaryDarkColor"
+            android:layout_margin="8dp"
+            android:text="Take Photo"
+            android:layout_gravity="center" />
 
-        android:layout_marginLeft="68dp"
-        android:layout_marginTop="252dp"
-        android:ems="10"
-        android:hint="COMPANY"
-        android:inputType="textPersonName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <Button
+            android:id="@+id/buttonSubmit"
+            style="@style/buttonStyle"
+            android:layout_margin="8dp"
+            android:text="@string/submit"
+            android:layout_gravity="center"
+            android:onClick="submit" />
 
-    <EditText
-        android:id="@+id/bill"
-        android:layout_width="wrap_content"
-        android:layout_height="43dp"
-        android:layout_marginStart="72dp"
-
-        android:layout_marginLeft="72dp"
-        android:layout_marginTop="324dp"
-        android:ems="10"
-        android:hint="Bill No"
-        android:inputType="textPersonName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/editquantity"
-        android:layout_width="wrap_content"
-        android:layout_height="43dp"
-        android:layout_marginStart="68dp"
-
-        android:layout_marginLeft="68dp"
-        android:layout_marginTop="404dp"
-        android:ems="10"
-        android:hint="Quantity"
-        android:inputType="number"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-</android.support.constraint.ConstraintLayout>
-
+    </LinearLayout>
+</RelativeLayout>
