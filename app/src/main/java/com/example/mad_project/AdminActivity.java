@@ -27,11 +27,11 @@ public class AdminActivity extends ActivityParent implements NavigationView.OnNa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
-        boolean correct = checkCredentials();
-        if (!correct) {
-            Toast.makeText(this, "Logging out, wrong cred", Toast.LENGTH_SHORT).show();
-            logout();
-        }
+//        boolean correct = checkCredentials();
+//        if (!correct) {
+//            Toast.makeText(this, "Logging out, wrong cred", Toast.LENGTH_SHORT).show();
+//            logout();
+//        }
 
         toolbar2 = findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar2);
@@ -96,15 +96,15 @@ public class AdminActivity extends ActivityParent implements NavigationView.OnNa
         }
     }
 
-    protected boolean checkCredentials() {
-        SharedPreferences sharedPreferences = getSharedPreferences("credentials", Activity.MODE_PRIVATE);
-        String uname = sharedPreferences.getString("username", "");
-        String pswd = sharedPreferences.getString("password", "");
-//        Toast.makeText(this, String.format("Check UserName: %s, Password: %s", uname, pswd), Toast.LENGTH_SHORT).show();
-        if (uname.equals(getString(R.string.AdminUsername)) && pswd.equals(getString(R.string.AdminPassword))) {
-            return true;
-        }
-        return false;
-    }
+//    protected boolean checkCredentials() {
+//        SharedPreferences sharedPreferences = getSharedPreferences("credentials", Activity.MODE_PRIVATE);
+//        String uname = sharedPreferences.getString("username", "");
+//        String pswd = sharedPreferences.getString("password", "");
+////        Toast.makeText(this, String.format("Check UserName: %s, Password: %s", uname, pswd), Toast.LENGTH_SHORT).show();
+//        if (uname.equals(getString(R.string.AdminUsername)) && pswd.equals(getString(R.string.AdminPassword))) {
+//            return true;
+//        }
+//        return false;
+//    }
 
 }

@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.os.Environment;
-import android.provider.MediaStore
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.solver.widgets.Snapshot;
@@ -27,6 +27,8 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.database.ValueEventListener;
@@ -41,10 +43,16 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.model.Document;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,8 +79,8 @@ public class StockFragment extends Fragment {
     Long quantity;
     stock stocks ;
     Boolean first;
-
-
+    FirebaseStorage storage;
+    String pathToFile;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -85,7 +93,7 @@ public class StockFragment extends Fragment {
         billno = (EditText) view.findViewById(R.id.bill);
         qty = (EditText) view.findViewById(R.id.editquantity);
         db = FirebaseFirestore.getInstance();
-
+        storage = FirebaseStorage.getInstance();
 
         first = true;
 
@@ -111,7 +119,6 @@ public class StockFragment extends Fragment {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             {
-
                                 String s = document.getData().toString();
                                 String [] lis = s.split(",?.=");
                                 List<String> list = new ArrayList<String>(Arrays.asList(lis));
@@ -182,6 +189,7 @@ public class StockFragment extends Fragment {
                         Toast.makeText(context, "object created", Toast.LENGTH_LONG).show();
                         newentry.set(stocks);
                         Toast.makeText(context, "added entry", Toast.LENGTH_LONG).show();
+                        uploadToFirebase(pathToFile);
                     } else {
                         Toast.makeText(context,"error connecting",Toast.LENGTH_LONG).show();
                     }
@@ -290,11 +298,12 @@ public class StockFragment extends Fragment {
             }
 
             if (photoFile != null) {
-                String pathToFile = photoFile.getAbsolutePath();
+                pathToFile = photoFile.getAbsolutePath();
                 System.out.println(pathToFile);
                 Uri photoURI = FileProvider.getUriForFile(view.getContext(),"com.mad.cameraandroid.fileprovider", photoFile);
                 takePic.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePic,1);
+//                uploadToFirebase(pathToFile);
             }
         }
     }
@@ -304,4 +313,32 @@ public class StockFragment extends Fragment {
 
     }
 
+    private void uploadToFirebase(String path){
+        String name = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        StorageReference storageRef = storage.getReference();
+        StorageReference folderRef = storageRef.child(name);
+        String imgName = new SimpleDateFormat("HHmmss").format(new Date());
+        StorageReference imgRef = folderRef.child(imgName + ".jpg");
+        InputStream stream = null;
+        try {
+            stream = new FileInputStream(new File(path));
+            UploadTask uploadTask = imgRef.putStream(stream);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    System.out.println("Error uploading");
+                    // Handle unsuccessful uploads
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    System.out.println("Done uploading");
+                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                    // ...
+                }
+            });
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 }

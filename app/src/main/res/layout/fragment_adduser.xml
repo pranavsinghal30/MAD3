@@ -36,8 +36,14 @@
             android:inputType="textPassword"
             android:layout_margin="@dimen/margin" />
 
+        <Spinner
+            android:id="@+id/typespinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <Button
             style="@style/buttonStyle"
+            android:id="@+id/sub"
             android:text="@string/submit"
             android:layout_gravity="center" />
     </LinearLayout>

@@ -8,10 +8,10 @@ public class Processing {
     private final String item;
     private final Long quantity;
     private final Long rejection;
-    private final Date date;
+    private final Timestamp date;
     private final String startTime;
 
-    public Processing (String item, Long quantity, Long rejection, Date date, String startTime, String endTime) {
+    public Processing (String item, Long quantity, Long rejection, Timestamp date, String startTime, String endTime) {
         this.item = item;
         this.quantity = quantity;
         this.rejection = rejection;
@@ -34,9 +34,7 @@ public class Processing {
         return rejection;
     }
 
-    public Date getDate() {
-        return date;
-    }
+    public Timestamp getDate() { return date; }
 
     public String getStartTime() {
         return startTime;
