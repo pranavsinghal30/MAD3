@@ -20,5 +20,7 @@
     <string name="bill_no">Bill No</string>
     <string name="item">Item</string>
     <string name="stock">Stock</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
 
 </resources>

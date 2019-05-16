@@ -142,7 +142,6 @@ public class DailyFragment extends Fragment {
                         "    }");
 
         anyChartViewtree.setChart(treeMap);
-
         return view;
     }
 
@@ -155,7 +154,6 @@ public class DailyFragment extends Fragment {
         CustomTreeDataEntry(String id, String parent, String product) {
             super(id, parent);
             setValue("product", product);
-
-
+        }
     }
-}}
+}

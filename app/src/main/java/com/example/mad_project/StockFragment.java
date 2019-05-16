@@ -5,12 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.solver.widgets.Snapshot;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
@@ -38,15 +36,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.model.Document;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -67,7 +62,7 @@ public class StockFragment extends Fragment {
     Spinner item;
     ToggleButton inout;
     Calendar myCalendar = Calendar.getInstance();
-    String dateFormat = "dd.MM.yyyy";
+    String companys, billnos, items, date1s, inouts, dateFormat = "dd.MM.yyyy";
     DatePickerDialog.OnDateSetListener date;
     SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.GERMAN);
     EditText qty, company, billno, editDate;
@@ -75,12 +70,12 @@ public class StockFragment extends Fragment {
     private FirebaseFirestore db;
     ValueEventListener valueEventListener;
     Timestamp firebasedate;
-    String companys, billnos, items, date1s, inouts;
     Long quantity;
     stock stocks ;
     Boolean first;
     FirebaseStorage storage;
     String pathToFile;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
