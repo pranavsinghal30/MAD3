@@ -22,9 +22,15 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,6 +55,7 @@ public class ProcessingFragment extends Fragment {
     EditText date_edittext, quantity_edittext, rejection_edittext, starttime_edittext, endtime_edittext;
     Context context;
     private long pauseOffset;
+    Boolean first;
 //    View v;
     @Nullable
     @Override
@@ -64,6 +71,7 @@ public class ProcessingFragment extends Fragment {
         quantity_edittext = (EditText) v.findViewById(R.id.quantity_edittext);
         rejection_edittext = (EditText) v.findViewById(R.id.rejected_edittext);
         context = v.getContext();
+        first = true;
 
         // reading the stock from firebase db
         db.collection("stock").document("itemlist")
@@ -88,7 +96,7 @@ public class ProcessingFragment extends Fragment {
                         }
                     }
                 });
-        //Date picker
+        //Date picker.
         long currentdate = System.currentTimeMillis();
         String dateString = sdf.format(currentdate);
         date_edittext.setText(dateString);
@@ -125,6 +133,7 @@ public class ProcessingFragment extends Fragment {
         submit_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                first = false;
                 Toast.makeText(context,"in submit",Toast.LENGTH_LONG).show();
 
                 //Make sure all the fields are filled with values
@@ -189,6 +198,65 @@ public class ProcessingFragment extends Fragment {
                 reset_chronometer();
             }
         });*/
+        db.collection("process").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value,
+                                @Nullable FirebaseFirestoreException e) {
+                DocumentReference docref;
+                String item;
+
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e);
+                    return;
+                }
+
+
+                for (DocumentChange doc : value.getDocumentChanges()) {
+                    QueryDocumentSnapshot document = doc.getDocument();
+                    Log.d(TAG, doc.getType().toString());
+                    switch (doc.getType()) {
+                        case ADDED:
+                            Log.d(TAG, "New city: " + doc.getDocument().getData());
+                            break;
+                        case MODIFIED:
+                            Log.d(TAG, "Modified city: " + doc.getDocument().getData());
+                            break;
+                        case REMOVED:
+                            Log.d(TAG, "Removed city: " + doc.getDocument().getData());
+                            break;
+                    }
+                    if (document != null && !first) {
+                        Log.d(TAG, "New city: " + doc.getDocument() + "inside if");
+                        item = doc.getDocument().get("item").toString();
+                        item = item.substring(0, item.length() - 2);
+                        Log.d(TAG, "incoming" + item);
+                        docref = db.collection("inventory").document(item);
+                        Log.d(TAG, "docref created" + docref.getId());
+                        docref.update("input", FieldValue.increment(-(Integer.parseInt(doc.getDocument().get("quantity").toString()))));
+                        docref.update("processing", FieldValue.increment((Integer.parseInt(doc.getDocument().get("quantity").toString()))));
+                        docref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    if (document.exists()) {
+                                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                    } else {
+                                        Log.d(TAG, "No such document");
+                                    }
+                                } else {
+                                    Log.d(TAG, "get failed with ", task.getException());
+                                }
+                            }
+                        });
+                        Log.d(TAG, "docref updated");
+
+                    }
+                }
+            }
+        });
+
+
         return v;
     }
 /*

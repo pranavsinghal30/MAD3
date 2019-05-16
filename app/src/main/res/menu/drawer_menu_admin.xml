@@ -13,9 +13,9 @@
             android:icon="@drawable/ic_processing"
             android:title="Add Task" />
         <item
-            android:id="@+id/nav_issues_admin"
+            android:id="@+id/nav_productivity_admin"
             android:icon="@drawable/ic_stock"
-            android:title="Issues" />
+            android:title="Productivity" />
         <item
             android:id="@+id/nav_adduser_admin"
             android:icon="@drawable/ic_add_user"
@@ -28,6 +28,7 @@
             android:id="@+id/nav_back"
             android:icon="@drawable/ic_back"
             android:title="Logout" />
+
 
     </group>
 
