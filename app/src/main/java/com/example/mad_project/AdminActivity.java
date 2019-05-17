@@ -37,7 +37,7 @@ public class AdminActivity extends ActivityParent implements NavigationView.OnNa
             account.setText("Admin");
         if(savedInstanceState == null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.fragment_container2, new Admin_daily_fragment(), "default");//.commit();
+            ft.replace(R.id.fragment_container2, new DailyFragment(), "default");//.commit();
             ft.commit();
             navigationView.setCheckedItem(R.id.nav_daily_admin);
         }
@@ -51,12 +51,12 @@ public class AdminActivity extends ActivityParent implements NavigationView.OnNa
         getSupportFragmentManager().popBackStack("top", FragmentManager.POP_BACK_STACK_INCLUSIVE);
         switch(menuItem.getItemId()){
             case R.id.nav_daily_admin:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container2, new Admin_daily_fragment(), "top").commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container2, new DailyFragment(), "top").commit();
                 break;
 
-            case R.id.nav_photos_admin:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container2, new Admin_photos_fragment(), "top").addToBackStack("top").commit();
-                break;
+//            case R.id.nav_photos_admin:
+//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container2, new Admin_photos_fragment(), "top").addToBackStack("top").commit();
+//                break;
 
 
             case R.id.nav_productivity_admin:

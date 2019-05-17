@@ -47,6 +47,8 @@ public class DailyFragment extends Fragment {
     CollectionReference colRef;
     String [] lis;
     int quantity;
+    TreeMap treeMap;// = AnyChart.treeMap();
+    View view;
 
     @Nullable
     @Override
@@ -54,8 +56,9 @@ public class DailyFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
 
 
-        final View view = inflater.inflate(R.layout.fragment_daily, container, false);
+        view = inflater.inflate(R.layout.fragment_daily, container, false);
         Context context = view.getContext();
+        treeMap = AnyChart.treeMap();
 
 
         db.collection("inventory").addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -75,7 +78,7 @@ public class DailyFragment extends Fragment {
                colRef = db.collection("inventory");
 
 
-               TreeMap treeMap = AnyChart.treeMap();
+               treeMap = AnyChart.treeMap();
                List<DataEntry> data = new ArrayList<>();
                data.add(new CustomTreeDataEntry("Quantity", null, "Quantity in KG"));
                data.add(new CustomTreeDataEntry("Output", "Quantity", "Output", 692000));
@@ -178,8 +181,8 @@ public class DailyFragment extends Fragment {
                                    "    }");
 
                    anyChartViewtree.setChart(treeMap);
-           }
-        });
+//           }
+//        });
 
 
         treeMap.padding(10d, 10d, 10d, 20d);
@@ -218,20 +221,22 @@ public class DailyFragment extends Fragment {
                         "    }");
 
         anyChartViewtree.setChart(treeMap);
+           }
+        });
 
         return view;
-    }}
+    }
+}
 
-    class CustomTreeDataEntry extends TreeDataEntry {
-        CustomTreeDataEntry(String id, String parent, String product, Integer value) {
-            super(id, parent, value);
-            setValue("product", product);
-            Log.d(TAG,id +" "+parent + product+ value );
-        }
+class CustomTreeDataEntry extends TreeDataEntry {
+    CustomTreeDataEntry(String id, String parent, String product, Integer value) {
+        super(id, parent, value);
+        setValue("product", product);
+        Log.d(TAG,id +" "+parent + product+ value );
+    }
 
-        CustomTreeDataEntry(String id, String parent, String product) {
-            super(id, parent);
-            setValue("product", product);
-        }
+    CustomTreeDataEntry(String id, String parent, String product) {
+        super(id, parent);
+        setValue("product", product);
     }
 }

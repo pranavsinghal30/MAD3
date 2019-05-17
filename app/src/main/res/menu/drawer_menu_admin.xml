@@ -8,18 +8,18 @@
             android:id="@+id/nav_daily_admin"
             android:icon="@drawable/ic_daily"
             android:title="Daily Report" />
-        <item
-            android:id="@+id/nav_task_admin"
-            android:icon="@drawable/ic_processing"
-            android:title="Add Task" />
+        <!--<item-->
+            <!--android:id="@+id/nav_task_admin"-->
+            <!--android:icon="@drawable/ic_processing"-->
+            <!--android:title="Add Task" />-->
         <item
             android:id="@+id/nav_productivity_admin"
             android:icon="@drawable/ic_stock"
             android:title="Productivity" />
-        <item
-            android:id="@+id/nav_photos_admin"
-            android:icon="@drawable/ic_photo_black_24dp"
-            android:title="Photos" />
+        <!--<item-->
+            <!--android:id="@+id/nav_photos_admin"-->
+            <!--android:icon="@drawable/ic_photo_black_24dp"-->
+            <!--android:title="Photos" />-->
         <!--<item-->
             <!--android:id="@+id/nav_issues_admin"-->
             <!--android:icon="@drawable/ic_stock"-->
