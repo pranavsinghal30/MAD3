@@ -16,10 +16,19 @@
             android:id="@+id/nav_productivity_admin"
             android:icon="@drawable/ic_stock"
             android:title="Productivity" />
+
+            android:id="@+id/nav_photos_admin"
+            android:icon="@drawable/ic_photo_black_24dp"
+            android:title="Photos" />
+        <!--<item-->
+            <!--android:id="@+id/nav_issues_admin"-->
+            <!--android:icon="@drawable/ic_stock"-->
+            <!--android:title="Issues" />-->
+
         <item
             android:id="@+id/nav_adduser_admin"
             android:icon="@drawable/ic_add_user"
-            android:title="Add Operator" />
+            android:title="Add User" />
         <item
             android:id="@+id/nav_analysis_admin"
             android:icon="@drawable/ic_fumigation"
@@ -28,8 +37,6 @@
             android:id="@+id/nav_back"
             android:icon="@drawable/ic_back"
             android:title="Logout" />
-
-
     </group>
 
 

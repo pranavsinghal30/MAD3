@@ -155,9 +155,9 @@ public class ProcessingFragment extends Fragment {
                         String startTime = starttime_edittext.getText().toString();
                         String endTime = endtime_edittext.getText().toString();
                         String dateString = date_edittext.getText().toString();
-                        Date date = new Date();
+//                        Date date = new Date();
                         Timestamp firebasedate = new Timestamp(myCalendar.getTime());
-                        Processing processing = new Processing(item, quantity, rejection, date, startTime, endTime);
+                        Processing processing = new Processing(item, quantity, rejection, firebasedate, startTime, endTime);
                         Toast.makeText(context, "object created", Toast.LENGTH_LONG).show();
                         newentry.set(processing);
                         Toast.makeText(context, "added entry", Toast.LENGTH_LONG).show();

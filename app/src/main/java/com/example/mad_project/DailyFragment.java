@@ -178,16 +178,46 @@ public class DailyFragment extends Fragment {
                                    "    }");
 
                    anyChartViewtree.setChart(treeMap);
-
-
-
-
-
-
            }
         });
 
 
+        treeMap.padding(10d, 10d, 10d, 20d);
+        treeMap.maxDepth(2d);
+        treeMap.hovered().fill("#bdbdbd", 1d);
+        treeMap.selectionMode(SelectionMode.NONE);
+
+        treeMap.legend().enabled(true);
+        treeMap.legend()
+                .padding(0d, 0d, 0d, 20d)
+                .position(Orientation.RIGHT)
+                .align(Align.TOP)
+                .itemsLayout(LegendLayout.VERTICAL);
+
+        treeMap.labels().useHtml(true);
+        treeMap.labels().fontColor("#212121");
+        treeMap.labels().fontSize(12d);
+        treeMap.labels().format(
+                "function() {\n" +
+                        "      return this.getData('product');\n" +
+                        "    }");
+
+        treeMap.headers().format(
+                "function() {\n" +
+                        "    return this.getData('product');\n" +
+                        "  }");
+
+        treeMap.tooltip()
+                .useHtml(true)
+                .titleFormat("{%product}")
+                .format("function() {\n" +
+                        "      return '<span style=\"color: #bfbfbf\">Revenue: </span>$' +\n" +
+                        "        anychart.format.number(this.value, {\n" +
+                        "          groupsSeparator: ' '\n" +
+                        "        });\n" +
+                        "    }");
+
+        anyChartViewtree.setChart(treeMap);
 
         return view;
     }}
@@ -202,8 +232,6 @@ public class DailyFragment extends Fragment {
         CustomTreeDataEntry(String id, String parent, String product) {
             super(id, parent);
             setValue("product", product);
-
-
+        }
     }
-
 }

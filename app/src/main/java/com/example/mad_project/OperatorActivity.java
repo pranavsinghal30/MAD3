@@ -40,10 +40,10 @@ public class OperatorActivity extends ActivityParent implements NavigationView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_operator);
-        boolean correct = checkCredentials();
-        if (!correct) {
-            logout();
-        }
+//        boolean correct = checkCredentials();
+//        if (!correct) {
+//            logout();
+//        }
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -51,9 +51,12 @@ public class OperatorActivity extends ActivityParent implements NavigationView.O
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View header = navigationView.getHeaderView(0);
-        name = (TextView) header.findViewById(R.id.username_header);
+        TextView name = (TextView) header.findViewById(R.id.username_header);
+        TextView account = (TextView) header.findViewById(R.id.accountType);
         if (name != null)
             name.setText(getSharedPreferences("credentials", Activity.MODE_PRIVATE).getString("username", "Operator"));
+        if (account != null)
+            account.setText("Operator");
 
         ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(this,drawer,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -125,15 +128,14 @@ public class OperatorActivity extends ActivityParent implements NavigationView.O
         }
     }
 
-    protected boolean checkCredentials() {
-        SharedPreferences sharedPreferences = getSharedPreferences("credentials", Activity.MODE_PRIVATE);
-        String uname = sharedPreferences.getString("username", "");
-        String pswd = sharedPreferences.getString("password", "");
-//        Toast.makeText(this, String.format("Check UserName: %s, Password: %s", uname, pswd), Toast.LENGTH_SHORT).show();
-        if (uname.equals(getString(R.string.OperatorsUsername)) && pswd.equals(getString(R.string.OperatorsPassword))) {
-            return true;
-        }
-        return false;
-    }
-
+//    protected boolean checkCredentials() {
+//        SharedPreferences sharedPreferences = getSharedPreferences("credentials", Activity.MODE_PRIVATE);
+//        String uname = sharedPreferences.getString("username", "");
+//        String pswd = sharedPreferences.getString("password", "");
+////        Toast.makeText(this, String.format("Check UserName: %s, Password: %s", uname, pswd), Toast.LENGTH_SHORT).show();
+//        if (uname.equals(getString(R.string.OperatorsUsername)) && pswd.equals(getString(R.string.OperatorsPassword))) {
+//            return true;
+//        }
+//        return false;
+//    }
 }

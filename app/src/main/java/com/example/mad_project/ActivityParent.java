@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 public abstract class ActivityParent extends AppCompatActivity {
 
-    protected abstract boolean checkCredentials();
+//    protected abstract boolean checkCredentials();
 
     protected void logout() {
         SharedPreferences sharedPreferences = getSharedPreferences("credentials", Activity.MODE_PRIVATE);
