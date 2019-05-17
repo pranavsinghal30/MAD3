@@ -228,6 +228,27 @@ public class StockFragment extends Fragment {
                             Log.d(TAG,"outgoing"+ item);
                             docref = db.collection("inventory").document(item);
                             docref.update("processing", FieldValue.increment(-(Integer.parseInt(doc.getDocument().get("quantity").toString()))));
+                            docref.update("output", FieldValue.increment((Integer.parseInt(doc.getDocument().get("quantity").toString()))));
+                            docref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
+                                        if (document.exists()) {
+                                            int i = Integer.parseInt(document.get("processing").toString());
+                                            Log.d(TAG, "DocumentSnapshot data: " + String.valueOf(i));
+                                            if(i <0)
+                                            {
+                                                Toast.makeText(context,"the quantity is becoming negative",Toast.LENGTH_LONG);
+                                            }
+                                        } else {
+                                            Log.d(TAG, "No such document");
+                                        }
+                                    } else {
+                                        Log.d(TAG, "get failed with ", task.getException());
+                                    }
+                                }
+                            });
 
 
                         } else if (doc.getDocument().get("inout").toString().equals("INCOMING")) {

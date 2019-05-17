@@ -58,9 +58,15 @@ public class AdminActivity extends ActivityParent implements NavigationView.OnNa
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container2, new Admin_photos_fragment(), "top").addToBackStack("top").commit();
                 break;
 
+
+            case R.id.nav_productivity_admin:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container2, new productivity(), "top").addToBackStack("top").commit();
+                break;
+
 //            case R.id.nav_issues_admin:
 //                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container2, new Admin_issues_fragment(), "top").addToBackStack("top").commit();
 //                break;
+
 
             case R.id.nav_adduser_admin:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container2, new adduser(), "top").addToBackStack("top").commit();
@@ -73,6 +79,8 @@ public class AdminActivity extends ActivityParent implements NavigationView.OnNa
             case R.id.nav_back:
                 logout();
                 break;
+
+
         }
         drawer2.closeDrawer(GravityCompat.START);
         return true;
